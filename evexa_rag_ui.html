@@ -721,15 +721,24 @@
       
       // Hardcoded offline response for Creator/Identity questions
       const lowerText = text.toLowerCase();
-      if (lowerText.includes("creator") || lowerText.includes("made you") || lowerText.includes("created you") || lowerText.includes("developer") || lowerText.includes("kisne bnaya") || lowerText.includes("kisne banaya") || lowerText.includes("who made you")) {
+      const creatorTriggers = [
+        "creator", "made you", "created you", "developer", "kisne bnaya", 
+        "kisne banaya", "who made you", "prince kumar", "who is prince", 
+        "founder", "developed you", "who built you", "your author"
+      ];
+      
+      const isCreatorQuestion = creatorTriggers.some(trigger => lowerText.includes(trigger));
+
+      if (isCreatorQuestion) {
         const creatorResponse = `
-          **I was proudly created by Prince Kumar!** 👨‍💻✨<br><br>
-          Prince is a talented M.Sc. Data Analytics student at IIT Patna, the Founder of Evexa Event Solution, and a Google Cloud Agentic Premier League National Finalist. 🏆<br><br>
+          **I was architected and developed by Prince Kumar!** 🚀👨‍💻<br><br>
+          Prince is a visionary **M.Sc. Data Analytics** scholar at **IIT Patna** and the Founder of **Evexa Event Solution**. He is recognized nationally for his exceptional skills in AI, recently emerging as a **National Finalist** at the prestigious **Google Cloud Agentic Premier League** where he was awarded the 'Digital Champion Badge'. 🏆🌟<br><br>
+          He specializes in building intelligent systems, Agentic AI frameworks, and advanced data analytics platforms.<br><br>
           **Connect with Prince:**<br>
           🎓 **Education:** IIT Patna (M.Sc. CS & Data Analytics)<br>
-          🐙 **GitHub:** <a href="https://github.com/Amourhoffen" target="_blank" style="color:#a78bfa;">Amourhoffen</a><br>
-          💼 **LinkedIn:** <a href="https://www.linkedin.com/in/prince-kumar-980043245/" target="_blank" style="color:#a78bfa;">Prince Kumar</a><br>
-          📧 **Email:** <a href="mailto:Ljprincekashyap@gmail.com" style="color:#a78bfa;">Ljprincekashyap@gmail.com</a><br>
+          🐙 **GitHub:** <a href="https://github.com/Amourhoffen" target="_blank" style="color:#a78bfa;font-weight:bold;">@Amourhoffen</a><br>
+          💼 **LinkedIn:** <a href="https://www.linkedin.com/in/prince-kumar-980043245/" target="_blank" style="color:#a78bfa;font-weight:bold;">Prince Kumar</a><br>
+          📧 **Email:** <a href="mailto:Ljprincekashyap@gmail.com" style="color:#a78bfa;font-weight:bold;">Ljprincekashyap@gmail.com</a><br>
           📱 **Phone:** +91 8252110159
         `;
         addMessage('bot', creatorResponse);

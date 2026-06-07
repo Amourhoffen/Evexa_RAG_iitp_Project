@@ -141,4 +141,36 @@ graph TD
 5. **UI Rendering:** The frontend renders the markdown beautifully and offers a Text-to-Speech (Read Aloud) option for students.
 
 ---
+
+## 🔮 Future Work & Advanced Capabilities (V2 Roadmap)
+
+As the global AI landscape evolves rapidly, Evexa Buddy is designed to scale with cutting-edge advancements. Future iterations of this architecture will focus on extreme optimization and complete data sovereignty:
+
+### Proposed V2 Architecture Diagram
+
+```mermaid
+graph TD
+    classDef user fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff;
+    classDef edge fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff;
+    classDef cache fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff;
+    classDef multimodal fill:#ec4899,stroke:#db2777,stroke-width:2px,color:#fff;
+
+    User(("Student")):::user --> MultiModal["Multi-Modal Input<br>(Text + Images/Diagrams)"]:::multimodal
+    MultiModal --> SemanticCache[("Semantic Cache<br>(RedisVL / GPTCache)")]:::cache
+    
+    SemanticCache -- "Cache Hit (Zero Latency)" --> UI["Frontend UI"]:::user
+    SemanticCache -- "Cache Miss" --> EdgeAgent{"Edge-Native Orchestrator"}:::edge
+    
+    EdgeAgent --> Hybrid["Local FAISS + BM25"]:::edge
+    Hybrid --> SLM["Local SLM<br>(Llama 3 8B / Gemma 2)"]:::edge
+    
+    SLM --> UI
+```
+
+### Key Upcoming Features
+1. **100% Offline, Edge-Native Execution:** Replacing cloud APIs with **Local SLMs (Llama 3 / Gemma 2)** to run entirely offline with zero latency and zero API cost.
+2. **Semantic Caching:** Integrating RedisVL/GPTCache to serve previously asked questions directly from vector cache, reducing compute by 40%.
+3. **Multi-Modal Support:** Processing student images of diagrams and handwritten equations using CLIP embeddings.
+
+---
 *Developed as part of the IITP Project.*

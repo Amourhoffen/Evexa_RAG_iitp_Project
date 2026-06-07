@@ -16,6 +16,22 @@
 
 ---
 
+## 📸 Application Screenshots
+
+### 1. Premium Glassmorphism UI (Home Screen)
+![Evexa Buddy Home Screen](assets/home_screen.png)
+
+### 2. Loading State (Executing RAG Process)
+![Evexa Buddy Loading State](assets/loading_state.png)
+
+### 3. AI Synthesized Answer (Markdown Rendered)
+![Evexa Buddy Final Answer](assets/final_answer.png)
+
+### 4. Advanced Offline Fallback Mechanism (API Failure Handling)
+![Evexa Buddy Fallback Search](assets/fallback_demo.png)
+
+---
+
 ## 🛠️ Tech Stack
 - **Framework:** Google ADK (Agent Development Kit)
 - **LLM:** Google Gemini Flash

@@ -550,6 +550,32 @@
       }
     }
 
+    async function getFallbackResults(query) {
+      let html = "⚠️ **Evexa AI is currently taking a short break (API Quota Reached).**<br><br>";
+      html += "But I won't leave you hanging! I just did a quick background search. Here are some helpful resources:<br><br>";
+      
+      try {
+        const wikiRes = await fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(query)}&limit=3&format=json&origin=*`);
+        const wikiData = await wikiRes.json();
+        
+        if (wikiData[1] && wikiData[1].length > 0) {
+          html += "📚 **Wikipedia Quick Links:**<br><ul>";
+          for (let i = 0; i < wikiData[1].length; i++) {
+            let snippet = wikiData[2][i] ? wikiData[2][i].substring(0, 60) + "..." : "Wikipedia Article";
+            html += `<li style="margin-bottom:6px;"><a href="${wikiData[3][i]}" target="_blank" style="color:#a78bfa;text-decoration:underline;font-weight:bold;">${wikiData[1][i]}</a><br><span style="font-size:12px;color:#aaa;">${snippet}</span></li>`;
+          }
+          html += "</ul><br>";
+        }
+      } catch (e) {
+        console.error("Fallback wiki error", e);
+      }
+
+      html += "🔍 **Deep Web Search:**<br>";
+      html += `👉 <a href="https://www.google.com/search?q=${encodeURIComponent(query)}" target="_blank" style="color:#60a5fa;text-decoration:underline;font-weight:bold;font-size:15px;">Search Google for "${query}"</a>`;
+
+      return html;
+    }
+
     async function sendToADK(message) {
       const res = await fetch(`${ADK_BASE}/run_sse`, {
         method: 'POST',
@@ -567,7 +593,7 @@
       });
 
       if (!res.ok) {
-        return "⚠️ **Error:** Backend server encountered an issue (HTTP " + res.status + "). This usually means your **Google Gemini API Key has reached its daily/minute quota limit**. Please check your API key limits or try using a new key.";
+        throw new Error(`HTTP Error ${res.status}`);
       }
 
       let fullText = '';
@@ -592,7 +618,9 @@
           }
         }
       }
-      return fullText || '⚠️ No valid response data received. Please try again or restart the server.';
+      
+      if (!fullText) throw new Error("No data received");
+      return fullText;
     }
 
     function addMessage(role, text) {
@@ -607,7 +635,6 @@
           </div>`;
       } else {
         const parsedHtml = marked.parse(text);
-        // Strip markdown and html tags for speech synthesis
         const rawTextForSpeech = text.replace(/[*#_`~]/g, '').replace(/<[^>]*>?/gm, '');
         
         box.innerHTML += `
@@ -623,20 +650,18 @@
       box.scrollTop = box.scrollHeight;
     }
 
-    // Text to Speech Functionality for Kids
     function speakText(btn) {
       if ('speechSynthesis' in window) {
         const text = decodeURIComponent(btn.getAttribute('data-text'));
-        window.speechSynthesis.cancel(); // Stop any ongoing speech
+        window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         
-        // Try to find a good female/kid-friendly voice (e.g. Google UK English Female or Microsoft Zira)
         const voices = window.speechSynthesis.getVoices();
         const preferredVoice = voices.find(v => v.name.includes('Female') || v.name.includes('Zira') || v.name.includes('Google'));
         if (preferredVoice) utterance.voice = preferredVoice;
         
-        utterance.rate = 0.95; // slightly slower for better understanding
-        utterance.pitch = 1.1; // slightly higher pitch
+        utterance.rate = 0.95;
+        utterance.pitch = 1.1;
         window.speechSynthesis.speak(utterance);
       } else {
         alert("Sorry, your browser does not support text-to-speech!");
@@ -702,7 +727,9 @@
         addMessage('bot', reply);
       } catch (e) {
         removeLoading();
-        addMessage('bot', '⚠️ Could not connect to Evexa AI. Make sure the ADK server is running at port 8000.');
+        console.warn("AI Engine failed, triggering fallback...", e);
+        const fallbackHTML = await getFallbackResults(text);
+        addMessage('bot', fallbackHTML);
       }
     }
 
@@ -710,7 +737,6 @@
       if (e.key === 'Enter' && !e.shiftKey) sendMessage();
     });
 
-    // Init session on load
     createSession();
   </script>
 </body>

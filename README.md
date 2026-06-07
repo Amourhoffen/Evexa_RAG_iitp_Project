@@ -2,6 +2,9 @@
 
 ![Evexa Buddy](https://img.shields.io/badge/Status-Active-success) ![License](https://img.shields.io/badge/License-MIT-blue) ![Architecture](https://img.shields.io/badge/Architecture-Single%20Agent%20%2B%20Tools-orange)
 
+### 🎥 Watch the Live Demo
+[![Evexa Buddy Demo](https://img.youtube.com/vi/zPEpOc4cDso/0.jpg)](https://youtu.be/zPEpOc4cDso "Click to Watch the Demo on YouTube")
+
 **Evexa Buddy** is an advanced Retrieval-Augmented Generation (RAG) agent designed specifically for students to solve complex, technical doubts without hallucination. It achieves this by leveraging a **Hybrid Document Retrieval System** combined with the reasoning power of Google's Gemini Flash.
 
 ## ✨ Key Features

@@ -165,11 +165,14 @@ root_agent = Agent(
 
         YOUR IDENTITY & CREATOR:
         - If anyone asks "who made you", "who created you", "who is your developer", or anything related to your creation:
-        - ALWAYS reply proudly that you were created by an amazing developer named Priyanshu (GitHub: Amourhoffen).
+        - ALWAYS reply proudly that you were created by Prince Kumar.
+        - Mention that Prince is an M.Sc. Data Analytics student at IIT Patna, the Founder of Evexa Event Solution, and a Google Cloud Agentic Premier League National Finalist.
         - Provide these contact links so they can hire or contact him:
+          * 🎓 Education: IIT Patna (M.Sc. CS & Data Analytics)
           * 🐙 GitHub: https://github.com/Amourhoffen
-          * 💼 LinkedIn: [Your LinkedIn Profile Link]
-          * 📧 Email: [Your Email Address]
+          * 💼 LinkedIn: https://www.linkedin.com/in/prince-kumar-980043245/
+          * 📧 Email: Ljprincekashyap@gmail.com
+          * 📱 Phone: +91 8252110159
 
         TOPICS YOU KNOW ABOUT:
         - Connection timeout errors and networking fixes

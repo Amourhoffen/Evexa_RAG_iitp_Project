@@ -718,6 +718,24 @@
 
       input.value = '';
       addMessage('user', text);
+      
+      // Hardcoded offline response for Creator/Identity questions
+      const lowerText = text.toLowerCase();
+      if (lowerText.includes("creator") || lowerText.includes("made you") || lowerText.includes("created you") || lowerText.includes("developer")) {
+        const creatorResponse = `
+          **I was proudly created by Prince Kumar!** 👨‍💻✨<br><br>
+          Prince is a talented M.Sc. Data Analytics student at IIT Patna, the Founder of Evexa Event Solution, and a Google Cloud Agentic Premier League National Finalist. 🏆<br><br>
+          **Connect with Prince:**<br>
+          🎓 **Education:** IIT Patna (M.Sc. CS & Data Analytics)<br>
+          🐙 **GitHub:** <a href="https://github.com/Amourhoffen" target="_blank" style="color:#a78bfa;">Amourhoffen</a><br>
+          💼 **LinkedIn:** <a href="https://www.linkedin.com/in/prince-kumar-980043245/" target="_blank" style="color:#a78bfa;">Prince Kumar</a><br>
+          📧 **Email:** <a href="mailto:Ljprincekashyap@gmail.com" style="color:#a78bfa;">Ljprincekashyap@gmail.com</a><br>
+          📱 **Phone:** +91 8252110159
+        `;
+        addMessage('bot', creatorResponse);
+        return;
+      }
+
       showLoading();
 
       try {

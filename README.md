@@ -64,6 +64,54 @@ Then navigate to `http://127.0.0.1:8080/evexa_rag_ui.html` in your browser.
 
 ## 🧠 System Architecture Breakdown
 
+### Advanced Flow & Architecture Diagram
+The system uses a **Single Agent with Tool Calling** pattern. Below is the detailed workflow:
+
+```mermaid
+graph TD
+    %% Styling
+    classDef user fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff;
+    classDef agent fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#fff;
+    classDef tool fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff;
+    classDef data fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff;
+    classDef llm fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff;
+
+    %% Nodes
+    User(("Student (User)")):::user
+    UI["Evexa Premium UI<br>(Glassmorphism & TTS)"]:::user
+    ADK["Google ADK Server<br>(Port 8000)"]:::agent
+    RootAgent{"Root Agent<br>(Evexa Buddy)"}:::agent
+    Gemini["Google Gemini Flash<br>(LLM Core)"]:::llm
+    
+    Tool["Tool: search_knowledge_base"]:::tool
+    
+    FAISS[("FAISS Vector DB<br>(Semantic Search - 60%)")]:::data
+    BM25[("BM25 Index<br>(Keyword Search - 40%)")]:::data
+    MiniLM["HuggingFace Embeddings<br>(all-MiniLM-L6-v2)"]:::data
+    Ensemble["Ensemble Retriever<br>(Re-ranking & Merging)"]:::tool
+
+    %% Relationships
+    User -- "1. Asks Technical Doubt" --> UI
+    UI -- "2. Sends HTTP POST (SSE)" --> ADK
+    ADK --> RootAgent
+    RootAgent -- "3. Checks context & Needs Facts" --> Tool
+    
+    Tool -- "4. Query string" --> MiniLM
+    MiniLM -- "Vectors" --> FAISS
+    Tool -- "4. Query string" --> BM25
+    
+    FAISS -- "Top K Docs" --> Ensemble
+    BM25 -- "Top K Docs" --> Ensemble
+    Ensemble -- "5. Fused Best Docs" --> Tool
+    
+    Tool -- "6. Retrieved Context" --> RootAgent
+    RootAgent -- "7. Prompts LLM with Context" --> Gemini
+    Gemini -- "8. Synthesizes Markdown Answer" --> RootAgent
+    
+    RootAgent -- "9. Streams Answer via SSE" --> UI
+    UI -- "10. Renders Markdown &<br>Enables 'Read Aloud'" --> User
+```
+
 1. **User Query Input:** The user types a technical doubt in the UI.
 2. **Tool Invocation:** The ADK Agent recognizes the need for factual data and triggers the RAG Tool.
 3. **Hybrid Retrieval:** 

@@ -122,13 +122,34 @@ The frontend is built using Vanilla CSS and JavaScript, avoiding heavy framework
 
 As the global AI landscape evolves rapidly, Evexa Buddy is designed to scale with cutting-edge advancements. Future iterations of this architecture will focus on extreme optimization and complete data sovereignty:
 
-### 7.1 100% Offline, Edge-Native Execution
+### 7.1 Advanced V2 Architecture Diagram (Proposed)
+
+```mermaid
+graph TD
+    classDef user fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff;
+    classDef edge fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff;
+    classDef cache fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff;
+    classDef multimodal fill:#ec4899,stroke:#db2777,stroke-width:2px,color:#fff;
+
+    User(("Student")):::user --> MultiModal["Multi-Modal Input<br>(Text + Images/Diagrams)"]:::multimodal
+    MultiModal --> SemanticCache[("Semantic Cache<br>(RedisVL / GPTCache)")]:::cache
+    
+    SemanticCache -- "Cache Hit (Zero Latency & Cost)" --> UI["Frontend UI"]:::user
+    SemanticCache -- "Cache Miss" --> EdgeAgent{"Edge-Native Orchestrator"}:::edge
+    
+    EdgeAgent --> Hybrid["Local FAISS + BM25"]:::edge
+    Hybrid --> SLM["Local SLM<br>(Llama 3 8B / Gemma 2)"]:::edge
+    
+    SLM --> UI
+```
+
+### 7.2 100% Offline, Edge-Native Execution
 Currently, the system relies on the cloud-based Google Gemini API for synthesis. To completely eliminate internet dependency and API rate limits, the next phase involves integrating **Local SLMs (Small Language Models)** such as Google's Gemma 2 (2B/9B) or Meta's Llama 3 (8B) directly on the edge device. Combined with local FAISS and BM25 indices, this will allow Evexa Buddy to function **100% offline** with zero latency, making it ideal for remote educational areas with poor internet connectivity.
 
-### 7.2 Semantic Caching for API Cost Optimization
+### 7.3 Semantic Caching for API Cost Optimization
 To drastically reduce API usage without compromising performance, a **Semantic Cache layer (e.g., RedisVL or GPTCache)** will be introduced. If a student asks a question conceptually similar to a previously asked question, the system will serve the cached answer using vector similarity rather than triggering a new LLM generation. This reduces compute costs and API calls by up to 40%.
 
-### 7.3 Multi-Modal RAG
+### 7.4 Multi-Modal RAG
 Expanding beyond text, future versions will incorporate Multi-Modal embeddings (e.g., CLIP) to allow students to upload images of diagrams or handwritten equations, retrieving relevant educational context and solving visual doubts.
 
 ---

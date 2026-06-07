@@ -566,6 +566,10 @@
         })
       });
 
+      if (!res.ok) {
+        return "⚠️ **Error:** Backend server encountered an issue (HTTP " + res.status + "). This usually means your **Google Gemini API Key has reached its daily/minute quota limit**. Please check your API key limits or try using a new key.";
+      }
+
       let fullText = '';
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -588,7 +592,7 @@
           }
         }
       }
-      return fullText || 'No response received. Please try again.';
+      return fullText || '⚠️ No valid response data received. Please try again or restart the server.';
     }
 
     function addMessage(role, text) {

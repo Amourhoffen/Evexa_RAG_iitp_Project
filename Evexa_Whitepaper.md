@@ -118,7 +118,22 @@ The frontend is built using Vanilla CSS and JavaScript, avoiding heavy framework
 
 ---
 
-## 6. Conclusion
+## 7. Future Work & Advanced Capabilities
+
+As the global AI landscape evolves rapidly, Evexa Buddy is designed to scale with cutting-edge advancements. Future iterations of this architecture will focus on extreme optimization and complete data sovereignty:
+
+### 7.1 100% Offline, Edge-Native Execution
+Currently, the system relies on the cloud-based Google Gemini API for synthesis. To completely eliminate internet dependency and API rate limits, the next phase involves integrating **Local SLMs (Small Language Models)** such as Google's Gemma 2 (2B/9B) or Meta's Llama 3 (8B) directly on the edge device. Combined with local FAISS and BM25 indices, this will allow Evexa Buddy to function **100% offline** with zero latency, making it ideal for remote educational areas with poor internet connectivity.
+
+### 7.2 Semantic Caching for API Cost Optimization
+To drastically reduce API usage without compromising performance, a **Semantic Cache layer (e.g., RedisVL or GPTCache)** will be introduced. If a student asks a question conceptually similar to a previously asked question, the system will serve the cached answer using vector similarity rather than triggering a new LLM generation. This reduces compute costs and API calls by up to 40%.
+
+### 7.3 Multi-Modal RAG
+Expanding beyond text, future versions will incorporate Multi-Modal embeddings (e.g., CLIP) to allow students to upload images of diagrams or handwritten equations, retrieving relevant educational context and solving visual doubts.
+
+---
+
+## 8. Conclusion
 
 Evexa Buddy demonstrates that by combining lightweight open-source retrieval tools (FAISS, BM25) with a powerful LLM orchestrator (Gemini Flash), we can build highly accurate, robust, and hallucination-free educational tools. The addition of fail-safe mechanisms ensures a high-availability architecture suitable for production deployments.
 
